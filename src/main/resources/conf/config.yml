@@ -24,12 +24,12 @@ concurrencyConfig:
 accounts:
   - awsAccessKey: ""
     awsSecretKey: ""
-    displayAccountName: ""
+    displayAccountName: "AppD"
     regions: ["us-east-1"]
     
 credentialsDecryptionConfig:
     enableDecryption: "false"
-    decryptionKey:
+    encryptionKey:
     
 proxyConfig:
     host:
