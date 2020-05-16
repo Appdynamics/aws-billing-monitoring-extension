@@ -7,9 +7,9 @@
   -->
 
 <monitor>
-    <name>AWS Billing Monitor</name>
+    <name>AWSBillingMonitor</name>
     <type>managed</type>
-    <description>AWS Billing Monitoring Extension</description>
+    <description>Monitors AWS Billing</description>
     <monitor-configuration></monitor-configuration>
     <monitor-run-task>
         <execution-style>periodic</execution-style>
@@ -21,8 +21,7 @@
         <execution-timeout-in-secs>60</execution-timeout-in-secs>
         
 		<task-arguments>
-			<argument name="config-file" is-required="true" default-value="monitors/AWSBillingMonitor/conf/config.yaml" />
-			<argument name="region-endpoints-config" is-required="true" default-value="monitors/AWSBillingMonitor/conf/region-endpoints.yaml" />
+			<argument name="config-file" is-required="true" default-value="monitors/AWSBillingMonitor/config.yml" />
 		</task-arguments>
             
         <java-task>
