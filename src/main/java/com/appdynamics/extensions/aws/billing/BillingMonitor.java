@@ -8,43 +8,42 @@
 
 package com.appdynamics.extensions.aws.billing;
 
-import static com.appdynamics.extensions.aws.Constants.METRIC_PATH_SEPARATOR;
-
 import com.appdynamics.extensions.aws.SingleNamespaceCloudwatchMonitor;
+import com.appdynamics.extensions.aws.billing.configuration.BillingConfiguration;
+import com.appdynamics.extensions.aws.billing.processors.BillingMetricsProcessor;
 import com.appdynamics.extensions.aws.collectors.NamespaceMetricStatisticsCollector;
-import com.appdynamics.extensions.aws.config.Configuration;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import com.appdynamics.extensions.logging.ExtensionsLoggerFactory;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
 
-/**
- * @author Satish Muddam
- */
-public class BillingMonitor extends SingleNamespaceCloudwatchMonitor<Configuration> {
-    private static final Logger LOGGER = Logger.getLogger("com.singularity.extensions.aws.BillingMonitor");
+import java.util.List;
+import java.util.Map;
 
-    private static final String DEFAULT_METRIC_PREFIX = String.format("%s%s%s%s",
-            "Custom Metrics", METRIC_PATH_SEPARATOR, "Amazon Billing", METRIC_PATH_SEPARATOR);
+public class BillingMonitor extends SingleNamespaceCloudwatchMonitor<BillingConfiguration> {
+    private static final Logger LOGGER = ExtensionsLoggerFactory.getLogger(BillingMonitor.class);
 
     public BillingMonitor() {
-        super(Configuration.class);
-        LOGGER.info(String.format("Using AWS BillingMonitor Monitor Version [%s]",
-                this.getClass().getPackage().getImplementationTitle()));
+        super(BillingConfiguration.class);
     }
 
     @Override
-    protected NamespaceMetricStatisticsCollector getNamespaceMetricsCollector(
-            Configuration config) {
-        MetricsProcessor metricsProcessor = createMetricsProcessor(config);
+    protected NamespaceMetricStatisticsCollector getNamespaceMetricsCollector(BillingConfiguration billingConfiguration) {
+        MetricsProcessor metricsProcessor = createMetricsProcessor(billingConfiguration);
 
         return new NamespaceMetricStatisticsCollector
-                .Builder(config.getAccounts(),
-                config.getConcurrencyConfig(),
-                config.getMetricsConfig(),
-                metricsProcessor)
-                .withCredentialsEncryptionConfig(config.getCredentialsDecryptionConfig())
-                .withProxyConfig(config.getProxyConfig())
+                .Builder(billingConfiguration.getAccounts(),
+                billingConfiguration.getConcurrencyConfig(),
+                billingConfiguration.getMetricsConfig(),
+                metricsProcessor,
+                billingConfiguration.getMetricPrefix())
+                .withCredentialsDecryptionConfig(billingConfiguration.getCredentialsDecryptionConfig())
+                .withProxyConfig(billingConfiguration.getProxyConfig())
                 .build();
+    }
+
+    private MetricsProcessor createMetricsProcessor(BillingConfiguration billingConfiguration){
+        return new BillingMetricsProcessor(billingConfiguration);
     }
 
     @Override
@@ -53,14 +52,17 @@ public class BillingMonitor extends SingleNamespaceCloudwatchMonitor<Configurati
     }
 
     @Override
-    protected String getMetricPrefix(Configuration config) {
-        return StringUtils.isNotBlank(config.getMetricPrefix()) ?
-                config.getMetricPrefix() : DEFAULT_METRIC_PREFIX;
+    protected String getDefaultMetricPrefix() {
+        return "Custom Metrics|Amazon Billing|";
     }
 
-    private MetricsProcessor createMetricsProcessor(Configuration config) {
-        return new BillingMetricsProcessor(
-                config.getMetricsConfig().getMetricTypes(),
-                config.getMetricsConfig().getExcludeMetrics());
+    @Override
+    public String getMonitorName() {
+        return "AWS Billing Monitor";
+    }
+
+    @Override
+    protected List<Map<String, ?>> getServers() {
+        return Lists.newArrayList();
     }
 }
