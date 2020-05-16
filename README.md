@@ -62,6 +62,12 @@ In order to use the extension, you need to update the config.yml file that is pr
        regions: ["eu-central-1","eu-west-1"]
    ~~~
 
+3. Provide the list of service names that needs to be monitored. This list accepts regular expressions.
+   
+   ~~~
+   serviceNames: ["AmazonApiGateway", "AmazonEC2", "AmazonECR", "ElasticMapReduce", "AWSQueueService"]
+   ~~~   
+   
 ## AWS Credentials Encryption
 To set an encrypted awsAccessKey and awsSecretKey in config.yaml, follow the steps below:
 
