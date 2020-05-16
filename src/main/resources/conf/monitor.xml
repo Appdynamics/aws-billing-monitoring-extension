@@ -7,7 +7,7 @@
   -->
 
 <monitor>
-    <name>AWS Billing Monitor</name>
+    <name>AWSBillingMonitor</name>
     <type>managed</type>
     <description>Monitors AWS Billing</description>
     <monitor-configuration></monitor-configuration>
