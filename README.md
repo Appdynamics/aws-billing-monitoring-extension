@@ -1,6 +1,6 @@
-#AWS Billing Monitoring Extension
+# AWS Billing Monitoring Extension
 
-##Use Case
+## Use Case
 Captures Billing statistics from Amazon CloudWatch and displays them in the AppDynamics Metric Browser.
 
 **Note : By default, the Machine agent can only send a fixed number of metrics to the controller. This extension potentially reports thousands of metrics, so to change this limit, please follow the instructions mentioned [here](https://docs.appdynamics.com/display/PRO40/Metrics+Limits).** 
