@@ -105,7 +105,7 @@ For any questions or feature request, please contact [AppDynamics Center of Exce
 ## Version
    |          Name            |  Version   |
    |--------------------------|------------|
-   |Extension Version         |2.0.1       |
+   |Extension Version         |2.0.2       |
    |Controller Compatibility  |4.5 or Later|
    |Agent Compatibility  |4.5.13 or Later|
-   |Last Update               |Feb 2, 2021 |
+   |Last Update               |Apr 5, 2021 |
